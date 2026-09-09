@@ -11,6 +11,16 @@ services:
       - db
       - redis
 
+  worker:
+    build: .
+    container_name: ecom-worker
+    command: celery -A app.celery_app.celery_app worker --loglevel=info
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
   db:
     image: postgres:16
     container_name: ecom-db
@@ -31,3 +41,4 @@ services:
 
 volumes:
   postgres_data:
+

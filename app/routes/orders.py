@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.product import Product
+from app.tasks import send_order_notification
 
 from app.database import get_db
 from app.schemas.order import (
@@ -72,6 +73,8 @@ def create_order(
 
     db.commit()
     db.refresh(new_order)
+
+    send_order_notification.delay(new_order.id)
 
     return new_order
 
