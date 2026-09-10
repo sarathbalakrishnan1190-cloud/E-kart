@@ -13,6 +13,7 @@ from app.celery_app import celery_app
 from app.routes import orders
 from app.routes import payments
 from app.redis import redis_client
+import os
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
@@ -70,4 +71,12 @@ def task_status(task_id: str):
         "task_id": task_id,
         "status": result.status,
         "result": result.result
+    }
+
+
+
+@app.get("/instance")
+def instance():
+    return {
+        "hostname": os.getenv("HOSTNAME")
     }
