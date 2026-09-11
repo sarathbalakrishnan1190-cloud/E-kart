@@ -14,9 +14,11 @@ from app.routes import orders
 from app.routes import payments
 from app.redis import redis_client
 import os
+from fastapi.staticfiles import StaticFiles
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 Base.metadata.create_all(bind=engine)
 
